@@ -1,0 +1,42 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-websocket')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.5.4.RELEASE'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.14'
+    compile('org.webjars.requirejs:2.2.0')
+    compile('org.webjars.npm:stompjs:2.3.3')
+    // https://mvnrepository.com/artifact/org.webjars.npm/sockjs
+    //compile group: 'org.webjars.npm', name: 'sockjs', version: '0.3.7'
+    compile group: 'org.webjars', name: 'webjars-locator', version: '0.32'
+    compile group: 'org.webjars', name: 'webjars-locator-core', version: '0.32'
+    compile group: 'org.webjars', name: 'jquery', version: '3.2.1'
+    compile group: 'org.webjars', name: 'bootstrap', version: '3.3.5'
+    // https://mvnrepository.com/artifact/org.webjars.bower/stomp-websocket
+    //compile group: 'org.webjars.bower', name: 'stomp-websocket', version: '2.3.4'
+
+}
