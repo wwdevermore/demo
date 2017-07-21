@@ -1,31 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
 <head>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/chatStyle.css" rel="stylesheet"/>
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+    <script src="/socketService.js"></script>
+    <script src="/service.js"></script>
     <meta charset="UTF-8"/>
     <title>Title</title>
 </head>
-<script>
-    var target="TO_ALL";
-    var stompClient=null;
-    function connect(){
-        var socket=new SockJS("/Messages");
-        stompClient=Stomp.over(socket);
-        stompClient.connect({},function (frame) {
-            console.log('Connected:'+frame);
-            stompClient.subscribe('/topic/app',function(data){
-                console.log(data);
-            })
-        })
-    }
-    window.onload=function () {
-        connect();
-    }
-</script>
+
 <body>
-ccc
+<div id="chatPanel">
+    <div id="content"></div>
+    <input id="sendText" type="text"/>
+    <input id="sendMsg" type="button" value="发送" onclick="sendMessages()"/>
+</div>
 </body>
 </html>

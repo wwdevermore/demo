@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,15 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class ChatController {
+    Logger logger=Logger.getLogger(ChatController.class);
     @RequestMapping("/chat")
     public String chat(){
+        logger.warn("[entered /chat..........]");
         return "chat";
-    }
-    @RequestMapping("/hello")
-    @SendTo("/topic/app")
-    public String app()throws Exception{
-        Thread.sleep(1000);
-        return "fuck fuck fuck";
-
     }
 }

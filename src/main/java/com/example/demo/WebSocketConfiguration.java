@@ -38,16 +38,16 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
                     @Override
                     public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
                         // 客户端与服务器端建立连接后，此处记录谁上线了
-                        //String username = session.getPrincipal().getName();
-                        //log.info("online: " + username);
+                        String username = session.getId();
+                        log.info("online: " + username);
                         super.afterConnectionEstablished(session);
                     }
 
                     @Override
                     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
                         // 客户端与服务器端断开连接后，此处记录谁下线了
-                        //String username = session.getPrincipal().getName();
-                        //log.info("offline: " + username);
+                        String username = session.getId();
+                        log.info("offline: " + username);
                         super.afterConnectionClosed(session, closeStatus);
                     }
                 };
