@@ -8,7 +8,7 @@ var target="TO_ALL";
 var stompClient=null;
 //使用sockJS连接socket
 function StartConnect(){
-    var socket=new SockJS("/Messages");
+    var socket=new SockJS("/Messages");//参数为server的端点endpoint
     stompClient=Stomp.over(socket);
     stompClient.connect({},function (frame) {
         //订阅消息
@@ -31,7 +31,7 @@ function sendMessages() {
     msgJSON.message="text";
     msgJSON.room_id="TEMP DATA";
     msgJSON.content=message.msg;
-    stompClient.send("/app/hello",{} ,JSON.stringify(msgJSON));
+    stompClient.send("/app/hello",{} ,JSON.stringify(msgJSON));//“app”为指向应用的前缀
     $("#sendText").val("");
 }
 //显示服务器发送的消息

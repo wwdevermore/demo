@@ -3,6 +3,7 @@ package com.example.demo;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
@@ -19,11 +20,12 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
+    //继承的抽象类中主要消息传输接口和消息代理接口
     final static Logger log=Logger.getLogger(WebSocketConfiguration.class);
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/topic");//prefix to target the broker
-        registry.setApplicationDestinationPrefixes("/app");//prefix to target application
+        registry.enableSimpleBroker("/topic");//前缀指向代理
+        registry.setApplicationDestinationPrefixes("/app");//前缀指向应用
     }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
@@ -32,22 +34,23 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
     @Override
     public void configureWebSocketTransport(final WebSocketTransportRegistration registration) {
         registration.addDecoratorFactory(new WebSocketHandlerDecoratorFactory() {
+            //添加装饰工厂，用于装饰WebSocketHandler，从而处理WebSocket消息
             @Override
             public WebSocketHandler decorate(final WebSocketHandler handler) {
                 return new WebSocketHandlerDecorator(handler) {
                     @Override
                     public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
                         // 客户端与服务器端建立连接后，此处记录谁上线了
-                        String username = session.getId();
-                        log.info("online: " + username);
+                        String address=session.getLocalAddress().toString();
+                        log.info("online: " + address);
                         super.afterConnectionEstablished(session);
                     }
 
                     @Override
                     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
                         // 客户端与服务器端断开连接后，此处记录谁下线了
-                        String username = session.getId();
-                        log.info("offline: " + username);
+                        String address=session.getLocalAddress().toString();
+                        log.info("offline: " + address+" "+closeStatus.toString());
                         super.afterConnectionClosed(session, closeStatus);
                     }
                 };

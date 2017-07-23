@@ -1,8 +1,6 @@
 package model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Created by wangw on 2017/7/21.

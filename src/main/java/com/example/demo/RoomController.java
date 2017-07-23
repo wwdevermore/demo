@@ -20,8 +20,7 @@ public class RoomController {
     @MessageMapping("/hello")
     @SendTo("/topic/users")
     public String messagesToService(ServiceMessage serviceMessage) throws Exception{
-        log.info("receive messages ......");
-        log.info("messages:  "+ serviceMessage.getMessage());
+        log.info("messages:  "+ serviceMessage.getContent());
         Map map= new HashMap<String,String>();
         map.put("content",serviceMessage.getContent());
         return JSON.toJSONString(map);
