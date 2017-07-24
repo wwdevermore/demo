@@ -18,6 +18,6 @@ public class PageController {
 
     @RequestMapping("/loginPage")
     public String login(){
-        return "logins";
+        return "login";
     }
 }

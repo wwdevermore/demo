@@ -31,26 +31,59 @@ dependencies {
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.14'
     compile('org.webjars.requirejs:2.2.0')
     compile('org.webjars.npm:stompjs:2.3.3')
-    // https://mvnrepository.com/artifact/org.webjars.npm/sockjs
-    //compile group: 'org.webjars.npm', name: 'sockjs', version: '0.3.7'
     compile group: 'org.webjars', name: 'webjars-locator', version: '0.32'
     compile group: 'org.webjars', name: 'webjars-locator-core', version: '0.32'
     compile group: 'org.webjars', name: 'jquery', version: '3.2.1'
     compile group: 'org.webjars', name: 'bootstrap', version: '3.3.5'
-    // https://mvnrepository.com/artifact/org.webjars.bower/stomp-websocket
-    //compile group: 'org.webjars.bower', name: 'stomp-websocket', version: '2.3.4'
 	compile group: 'org.springframework', name: 'springloaded', version: '1.2.3.RELEASE'
 	compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '1.5.4.RELEASE'
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '1.5.3.RELEASE'
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-log4j
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j', version: '1.3.2.RELEASE'
-	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
 	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
-	// https://mvnrepository.com/artifact/log4j/log4j
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
 	compile group: 'com.alibaba', name: 'fastjson', version: '1.2.32'
-	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
 	compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
+	compile 'org.apache.httpcomponents:httpclient:4.5.3'
+	//webservice服务相关
+	compile("org.springframework.ws:spring-ws-core")
+	compile(files(genJaxb.classesDir).builtBy(genJaxb))
+	jaxb "com.sun.xml.bind:jaxb-xjc:2.1.7"
+}
 
+//从WSDL生成JAVA CLASSES，gradle的配置方式比MAVEN复杂，原因是没有插件，所以使用ant
+task genJaxb {
+	ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+	ext.classesDir = "${buildDir}/classes/jaxb"
+	ext.schema = "http://demo.1hai.cn/ssologin/loginservice.asmx?op=LoginV2"
+
+	outputs.dir classesDir
+
+	doLast() {
+		project.ant {
+			taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+					classpath: configurations.jaxb.asPath
+			mkdir(dir: sourcesDir)
+			mkdir(dir: classesDir)
+
+			xjc(destdir: sourcesDir, schema: schema,
+					package: "hello.wsdl") {
+				arg(value: "-wsdl")
+				produces(dir: sourcesDir, includes: "**/*.java")
+			}
+
+			javac(destdir: classesDir, source: 1.8, target: 1.8, debug: true,
+					debugLevel: "lines,vars,source",
+					classpath: configurations.jaxb.asPath) {
+				src(path: sourcesDir)
+				include(name: "**/*.java")
+				include(name: "*.java")
+			}
+
+			copy(todir: classesDir) {
+				fileset(dir: sourcesDir, erroronmissingdir: false) {
+					exclude(name: "**/*.java")
+				}
+			}
+		}
+	}
 }
