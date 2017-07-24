@@ -10,9 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
     Logger logger=Logger.getLogger(PageController.class);
-    @RequestMapping("/chat")
+    @RequestMapping("/chatPage")
     public String chat(){
         logger.warn("[entered /chat..........]");
         return "chat";
+    }
+
+    @RequestMapping("/loginPage")
+    public String login(){
+        return "login";
     }
 }

@@ -13,8 +13,8 @@ import java.util.Map;
  * Created by wangw on 2017/7/21.
  */
 public class Router {
-    private static Map<Integer, Agent> onlineServiceMap=new ConcurrentReaderHashMap();
+    private static Map<Integer, Agent> onlineAgentsMap =new ConcurrentReaderHashMap();
     private static Map<String, Room> roomMap=new ConcurrentReaderHashMap();
-    private static List<Integer> idleServiceList=new ArrayList<>();
-    private static LinkedList<String> queueRoomIdList=new LinkedList<>();
+    private static List<Integer> idleAgentsList =new ArrayList<>();
+    private static LinkedList<String> queueRoomsIdList =new LinkedList<>();
 }

@@ -3,7 +3,6 @@ package com.example.demo;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
@@ -29,7 +28,7 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
     }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/Messages").withSockJS();
+        registry.addEndpoint("/Messages").withSockJS();//启用sockJs
     }
     @Override
     public void configureWebSocketTransport(final WebSocketTransportRegistration registration) {
