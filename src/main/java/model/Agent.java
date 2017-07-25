@@ -15,6 +15,7 @@ public class Agent {
     private int serviceId;
     private String serviceName;
     private WebSocketSession wsSession;
+    private String uuid;
     private boolean isIdle;
     private List<String> roomList = new ArrayList<>();
     private Date recentActiveTime = new Date();

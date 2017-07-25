@@ -44,46 +44,8 @@ dependencies {
 	compile group: 'com.alibaba', name: 'fastjson', version: '1.2.32'
 	compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
 	compile 'org.apache.httpcomponents:httpclient:4.5.3'
-	//webservice服务相关
-	compile("org.springframework.ws:spring-ws-core")
-	compile(files(genJaxb.classesDir).builtBy(genJaxb))
-	jaxb "com.sun.xml.bind:jaxb-xjc:2.1.7"
-}
+	compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+	compile group: 'jaxen', name: 'jaxen', version: '1.1.6'
 
-//从WSDL生成JAVA CLASSES，gradle的配置方式比MAVEN复杂，原因是没有插件，所以使用ant
-task genJaxb {
-	ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
-	ext.classesDir = "${buildDir}/classes/jaxb"
-	ext.schema = "http://demo.1hai.cn/ssologin/loginservice.asmx?op=LoginV2"
 
-	outputs.dir classesDir
-
-	doLast() {
-		project.ant {
-			taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
-					classpath: configurations.jaxb.asPath
-			mkdir(dir: sourcesDir)
-			mkdir(dir: classesDir)
-
-			xjc(destdir: sourcesDir, schema: schema,
-					package: "hello.wsdl") {
-				arg(value: "-wsdl")
-				produces(dir: sourcesDir, includes: "**/*.java")
-			}
-
-			javac(destdir: classesDir, source: 1.8, target: 1.8, debug: true,
-					debugLevel: "lines,vars,source",
-					classpath: configurations.jaxb.asPath) {
-				src(path: sourcesDir)
-				include(name: "**/*.java")
-				include(name: "*.java")
-			}
-
-			copy(todir: classesDir) {
-				fileset(dir: sourcesDir, erroronmissingdir: false) {
-					exclude(name: "**/*.java")
-				}
-			}
-		}
-	}
 }

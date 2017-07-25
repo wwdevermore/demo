@@ -9,7 +9,7 @@ public class PersonnelLogin {
         JSONObject param = new JSONObject();
         param.put("UserNo", String.valueOf(id));
         param.put("Password", password);
-        String responseString = HttpUtils.post(Constant.LOGIN_URL, null, param.toJSONString());
+        String responseString = HttpUtils.post(Constant.loginUrl, null, param.toJSONString());
         if (responseString == null) {
             JSONObject result = new JSONObject();
             result.put("IsSuccess", false);
